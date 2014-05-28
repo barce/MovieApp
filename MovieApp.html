@@ -1,13 +1,43 @@
 <head>
-  <title>MovieApp</title>
+    <title>My Movie App</title>
 </head>
-
+ 
 <body>
-  {{> hello}}
+    <h1>Movies</h1>
+    {{> moviesTemplate }}
+    {{> movieForm }}
 </body>
 
-<template name="hello">
-  <h1>Hello World!</h1>
-  {{greeting}}
-  <input type="button" value="Click" />
+<template name="moviesTemplate">
+    <ul>
+    {{#each movies}}
+    <li>
+        {{title}}
+    </li>
+    {{/each}}
+    </ul>
 </template>
+
+<template name="movieForm">
+    <fieldset>
+    <legend>Add New Movie</legend>
+    <form>
+        <div>
+            <label>
+                Title:
+                <input id="title" />
+            </label>
+        </div>
+        <div>
+            <label>
+                Director:
+                <input id="director" />
+            </label>
+        </div>
+        <div>
+            <input type="submit" value="Add Movie" />
+        </div>
+    </form>
+    </fieldset>
+</template>
+

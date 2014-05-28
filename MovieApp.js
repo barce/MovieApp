@@ -1,19 +1,38 @@
 if (Meteor.isClient) {
-  Template.hello.greeting = function () {
-    return "Welcome to MovieApp.";
+  // Declare client Movies collection
+  Movies = new Meteor.Collection("movies");
+   
+  // Bind moviesTemplate to Movies collection
+  Template.moviesTemplate.movies = function () {
+    return Movies.find();
   };
 
-  Template.hello.events({
-    'click input': function () {
-      // template data, if any, is available in 'this'
-      if (typeof console !== 'undefined')
-        console.log("You pressed the button");
+  Template.movieForm.events = {
+    'submit': function (e, tmpl) {
+      // Don't postback
+      e.preventDefault();
+      
+      // create the new movie
+      var newMovie = {
+        title: tmpl.find("#title").value,
+        director: tmpl.find("#director").value
+      };
+      
+      // add the movie to the db
+      Movies.insert(newMovie);
     }
-  });
+  };
 }
 
 if (Meteor.isServer) {
+  Movies = new Meteor.Collection("movies");
+
   Meteor.startup(function () {
-    // code to run on server at startup
+    if (Movies.find().count() == 0) {
+      console.log("got here");
+      Movies.insert({ title: "Star Wars", director: "Lucas" });
+      Movies.insert({ title: "Memento", director: "Nolan" });
+      Movies.insert({ title: "King Kong", director: "Jackson" });
+    }
   });
 }
